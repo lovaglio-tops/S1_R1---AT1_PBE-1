@@ -47,23 +47,43 @@ const categoriaModel = {
     },
 
     atulizarCategoria: async (cCategoria) => {
-         try {
+        try {
 
             const sql = `UPDATE categorias
-                SET descricaoCategoria = ?,
-                    dataCad = ?,
-                WHERE idCategoria = ?`;
-            const values = [cCategoria.descricaoCategoria, cCategoria.dataCad, cCategoria.idCategoria];
+            SET descricaoCategoria = ?,
+                dataCad = ?
+            WHERE idCategoria = ?`;
+
+            const values = [
+                cCategoria.descricaoCategoria,
+                cCategoria.dataCad,
+                cCategoria.idCategoria
+            ];
+
+            const [rows] = await pool.execute(sql, values);
+            return rows;
+
+        } catch (error) {
+            console.error('erro ao atualizar categoria:', error);
+            throw error;
+        }
+    },
+
+
+    deletarCategoria: async (idCategoria) => {
+        try {
+
+            const sql = ' delete from categorias where idCategoria= ?';
+            const values = [idCategoria];
             const [rows] = await pool.execute(sql, values);
             return rows;
 
 
         } catch (error) {
-            console.error('erro ao atulizar categoria:', error);
+            console.error('erro ao deletar categoria:', error);
             throw error;
         }
-    }
-
+    },
 
 
 }
