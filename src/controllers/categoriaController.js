@@ -3,7 +3,7 @@ import categoriaModel from "../models/categoriasModels.js";
 
 const categoriaController = {
 
-     criarCategoria: async (req, res) => {
+    criarCategoria: async (req, res) => {
         try {
 
             const { descricaoCategoria, dataCad } = req.body;
@@ -37,7 +37,7 @@ const categoriaController = {
                 }
                 const categoria = await categoriaModel.buscarUmaCategoria(idCategoria);
                 if (categoria.length == 0) {
-                    return res.status(200).json({ message: 'não há nenhuma categoria com este id' });
+                    return res.status(401).json({ message: 'não há nenhuma categoria com este id' });
                 }
 
 
@@ -61,6 +61,16 @@ const categoriaController = {
         try {
             const { idCategoria } = req.params;
             const categoria = req.body;
+
+            if (idCategoria) {
+                if (idCategoria === "" || idCategoria <= 0) {
+                    return res.status(400).json({ erro: "id da categoria invalido" });
+                }
+                const categoria = await categoriaModel.buscarUmaCategoria(idCategoria);
+                if (categoria.length == 0) {
+                    return res.status(401).json({ message: 'não há nenhuma categoria com este id' });
+                }
+            }
 
             const result = await categoriaModel.atulizarCategoria({
                 idCategoria: idCategoria,
@@ -94,15 +104,15 @@ const categoriaController = {
                 }
                 const categoria = await categoriaModel.buscarUmaCategoria(idCategoria);
                 if (categoria.length == 0) {
-                    return res.status(200).json({ message: 'não há nenhuma categoria com este id' });
+                    return res.status(401).json({ message: 'não há nenhuma categoria com este id' });
                 }
 
                 await categoriaModel.deletarCategoria(idCategoria)
                 res.status(200).json({ message: 'categoria deletada com sucesso' });
-                
+
             }
 
-            
+
         } catch (error) {
             console.error('erro ao listar categoria:', error);
             res.status(500).json({ error: 'erro no servidor ao listar categoria' });

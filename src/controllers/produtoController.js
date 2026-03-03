@@ -8,7 +8,7 @@ const produtoController = {
 
             const { idCategoria, nomeProduto, valorProduto, vinculoImagem, dataCad } = req.body;
 
-            // Campos obrigatórios
+            
             if (!idCategoria || !nomeProduto || !valorProduto || !vinculoImagem || !dataCad) {
                 return res.status(400).json({ error: 'campos obrigatorios não prenchidos!' });
             }
@@ -18,10 +18,10 @@ const produtoController = {
             }
             const categoria = await categoriaModel.buscarUmaCategoria(idCategoria);
             if (categoria.length == 0) {
-                return res.status(400).json({ message: 'não há nenhuma categoria com este id' });
+                return res.status(404).json({ message: 'não há nenhuma categoria com este id' });
             }
 
-            // Insere cliente
+         
             await produtoModel.inserirProduto(idCategoria, nomeProduto, valorProduto, vinculoImagem, dataCad)
 
             res.status(201).json({ message: 'produto cadastrado com sucesso!' });
@@ -43,7 +43,7 @@ const produtoController = {
                 }
                 const produto = await produtoModel.buscarUmProduto(idProduto);
                 if (produto.length == 0) {
-                    return res.status(200).json({ message: 'não há nenhum produto com este id' });
+                    return res.status(404).json({ message: 'não há nenhum produto com este id' });
                 }
 
 
