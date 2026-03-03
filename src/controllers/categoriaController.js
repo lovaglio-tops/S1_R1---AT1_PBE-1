@@ -66,8 +66,8 @@ const categoriaController = {
                 if (idCategoria === "" || idCategoria <= 0) {
                     return res.status(400).json({ erro: "id da categoria invalido" });
                 }
-                const categoria = await categoriaModel.buscarUmaCategoria(idCategoria);
-                if (categoria.length == 0) {
+                const categoriaExist = await categoriaModel.buscarUmaCategoria(idCategoria);
+                if (categoriaExist.length == 0) {
                     return res.status(401).json({ message: 'não há nenhuma categoria com este id' });
                 }
             }
